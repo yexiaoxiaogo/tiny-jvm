@@ -10,8 +10,6 @@ public class Const {
     // ACCESS
     public static final int ACC_STATIC = 0x0008;
     public static final int ACC_NATIVE = 0x0100;
-    public static final int ACC_INTERFACE = 0x0200;
-    public static final int ACC_ABSTRACT = 0x0400;
 
     // FRAME
     public static final int FAKE_FRAME = 1;

@@ -120,29 +120,4 @@ public class ClassLoader {
         }
     }
 
-    public void loadPrimitiveClass(String name) {
-        Class cache = Heap.findClass(name);
-        if (cache != null) {
-            return;
-        }
-        Class cls = new Class(1, name, this);
-        Instance metaCls = Heap.findClass("java/lang/Class").newInstance();
-        cls.setRuntimeClass(metaCls);
-        metaCls.setMetaClass(cls);
-
-        doRegister(cls);
-    }
-
-    public void loadPrimitiveArrayClass(String name) {
-        Class cache = Heap.findClass(name);
-        if (cache != null) {
-            return;
-        }
-        Class cls = new Class(1, name, this);
-        Instance metaCls = Heap.findClass("java/lang/Class").newInstance();
-        cls.setRuntimeClass(metaCls);
-        metaCls.setMetaClass(cls);
-
-        doRegister(cls);
-    }
 }

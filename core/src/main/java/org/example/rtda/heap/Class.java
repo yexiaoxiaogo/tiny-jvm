@@ -119,33 +119,6 @@ public class Class {
         return this.superClass.getMethod(name, descriptor);
     }
 
-    public Method getLambdaMethod(String name) {
-        for (Method method : methods) {
-            if (Objects.equals(method.name, name)) {
-                return method;
-            }
-        }
-        return null;
-    }
-
-    public Field getField(String fieldName, String fieldDescriptor) {
-        for (Field field : fields) {
-            if (Objects.equals(field.name, fieldName) && Objects
-                    .equals(field.descriptor, fieldDescriptor)) {
-                return field;
-            }
-        }
-        return null;
-    }
-
-    public Field getField(String fieldName) {
-        for (Field field : fields) {
-            if (Objects.equals(field.name, fieldName)) {
-                return field;
-            }
-        }
-        return null;
-    }
 
     public void setSuperClass(Class superClass) {
         this.superClass = superClass;
@@ -182,16 +155,6 @@ public class Class {
 
     public void setStat(int level) {
         this.stat = level;
-    }
-
-    public Class getUnStaticInitSuperClass() {
-        if (!this.getStat()) {
-            return this;
-        }
-        if (this.superClass == null) {
-            return null;
-        }
-        return this.superClass.getUnStaticInitSuperClass();
     }
 
     public void setInterfaces(List<Class> interfaces) {
@@ -255,9 +218,6 @@ public class Class {
         return false;
     }
 
-    public boolean isInterface() {
-        return (accessFlags & 0x0200) != 0;
-    }
 
     public Instance getRuntimeClass() {
         return runtimeClass;
@@ -265,14 +225,6 @@ public class Class {
 
     public void setRuntimeClass(Instance runtimeClass) {
         this.runtimeClass = runtimeClass;
-    }
-
-    public boolean isPrimitive() {
-        if (name.equals("java/lang/Character")) {
-            return true;
-        }
-        System.out.println("is primitive ? " + name);
-        return false;
     }
 
     public String getSource() {

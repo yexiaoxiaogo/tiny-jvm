@@ -3,9 +3,7 @@ package org.example.rtda.heap;
 import org.example.util.EnvHolder;
 import org.example.util.Logger;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public abstract class Heap {
@@ -41,15 +39,5 @@ public abstract class Heap {
             Logger.clazz("[Loaded ".concat(name).concat(" from ").concat(source) + "]");
         }
         STRING_K_CLASS_MAP.putIfAbsent(name, clazz);
-    }
-
-    public static List<Class> getClasses() {
-        return new ArrayList<>(STRING_K_CLASS_MAP.values());
-    }
-
-    // for test
-    public static void clear() {
-        NATIVE_METHOD_MAP.clear();
-        STRING_K_CLASS_MAP.clear();
     }
 }
