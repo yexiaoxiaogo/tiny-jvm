@@ -169,17 +169,8 @@ public abstract class ClassReader {
 
             ConstantInfo info = null;
             switch (infoEnum) {
-                case ConstantPoolInfoEnum.CONSTANT_Fieldref:
-                    info = new FieldDef(infoEnum, is.readUnsignedShort(), is.readUnsignedShort());
-                    break;
                 case ConstantPoolInfoEnum.CONSTANT_Methodref:
                     info = new MethodDef(infoEnum, is.readUnsignedShort(), is.readUnsignedShort());
-                    break;
-                case ConstantPoolInfoEnum.CONSTANT_InterfaceMethodref:
-                    info = new InterfaceMethodDef(infoEnum, is.readUnsignedShort(), is.readUnsignedShort());
-                    break;
-                case ConstantPoolInfoEnum.CONSTANT_String:
-                    info = new StringCp(infoEnum, is.readUnsignedShort());
                     break;
                 case ConstantPoolInfoEnum.CONSTANT_Class:
                     info = new ClassCp(infoEnum, is.readUnsignedShort());
@@ -192,27 +183,6 @@ public abstract class ClassReader {
                     byte[] bytes = Utils.readNBytes(is, length);
                     info = new Utf8(infoEnum, bytes);
                     break;
-                case ConstantPoolInfoEnum.CONSTANT_MethodHandle:
-                    info = new MethodHandle(infoEnum, is.readUnsignedByte(), is.readUnsignedShort());
-                    break;
-                case ConstantPoolInfoEnum.CONSTANT_MethodType:
-                    info = new MethodType(infoEnum, is.readUnsignedShort());
-                    break;
-                case ConstantPoolInfoEnum.CONSTANT_InvokeDynamic:
-                    info = new InvokeDynamic(infoEnum, is.readUnsignedShort(), is.readUnsignedShort());
-                    break;
-                case ConstantPoolInfoEnum.CONSTANT_Integer:
-                    info = new IntegerCp(infoEnum, is.readInt());
-                    break;
-//                case ConstantPoolInfoEnum.CONSTANT_Long:
-//                    info = new LongCp(infoEnum, is.readLong());
-//                    break;
-//                case ConstantPoolInfoEnum.CONSTANT_Float:
-//                    info = new FloatCp(infoEnum, is.readFloat());
-//                    break;
-//                case ConstantPoolInfoEnum.CONSTANT_Double:
-//                    info = new DoubleCp(infoEnum, is.readDouble());
-//                    break;
             }
             if (info == null) {
                 throw new UnsupportedOperationException("un parse cp " + infoEnum);

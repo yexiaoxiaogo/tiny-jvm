@@ -1,6 +1,5 @@
 package org.example.rtda.heap;
 
-import org.example.rtda.Frame;
 import org.example.rtda.UnionSlot;
 
 public class Field {

@@ -2,13 +2,10 @@ package org.example;
 
 import org.example.classpath.Entry;
 import org.example.nativebridge.java.lang.ObjectBridge;
-import org.example.rtda.Frame;
-import org.example.rtda.UnionSlot;
 import org.example.rtda.heap.*;
 import org.example.rtda.heap.Class;
 import org.example.util.EnvHolder;
 import org.example.classpath.Classpath;
-import org.example.util.Utils;
 import org.example.classloader.ClassLoader;
 import org.example.rtda.Thread;
 import org.example.rtda.MetaSpace;

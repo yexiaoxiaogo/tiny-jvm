@@ -14,7 +14,6 @@ import org.example.rtda.heap.*;
 import org.example.rtda.heap.Class;
 
 import java.io.DataInputStream;
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -90,20 +89,6 @@ public abstract class Utils {
 
     public static String genNativeMethodKey(String clazz, String name, String descriptor) {
         return clazz + "_" + name + "_" + descriptor;
-    }
-
-    public static String classpath(String classpath) {
-        return classpath;
-    }
-
-    public static String replace(String src, char target, char replacement) {
-        char[] sources = src.toCharArray();
-        for (int i = 0; i < sources.length; i++) {
-            if (sources[i] == target) {
-                sources[i] = replacement;
-            }
-        }
-        return new String(sources);
     }
 
     public static Instance str2Obj(String str, ClassLoader classLoader) {
