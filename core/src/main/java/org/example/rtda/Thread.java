@@ -29,10 +29,6 @@ public class Thread {
         return frame;
     }
 
-    public boolean empty() {
-        return this.top == 0;
-    }
-
     public int size() {
         return this.top;
     }
@@ -40,9 +36,5 @@ public class Thread {
     // 当前栈顶栈帧
     public Frame topFrame() {
         return this.frames[top - 1];
-    }
-
-    public Frame callerFrame() {
-        return this.frames[top - 2];
     }
 }

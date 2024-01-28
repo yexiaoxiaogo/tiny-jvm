@@ -3,9 +3,7 @@ package org.example.rtda.heap;
 import org.example.classfile.ClassFile;
 import org.example.classfile.ConstantPool;
 import org.example.classfile.attribute.BootstrapMethods;
-import org.example.rtda.Frame;
 import org.example.classloader.ClassLoader;
-import org.example.interpret.Interpreter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -95,10 +93,6 @@ public class Class {
         return null;
     }
 
-    public Method getClinitMethod() {
-        return getMethod("<clinit>", "()V");
-    }
-
     public Method getMethod(String name, String descriptor) {
         for (Method method : methods) {
             if (Objects.equals(method.name, name) && Objects.equals(method.descriptor, descriptor)) {
@@ -149,21 +143,6 @@ public class Class {
         return field;
     }
 
-    public boolean getStat() {
-        return this.stat > 0;
-    }
-
-    public void setStat(int level) {
-        this.stat = level;
-    }
-
-    public void setInterfaces(List<Class> interfaces) {
-        this.interfaces = interfaces;
-    }
-
-    public List<Class> getInterfaces() {
-        return interfaces;
-    }
 
     @Override
     public String toString() {
@@ -178,45 +157,6 @@ public class Class {
                 '}';
     }
 
-    public void interfaceInit(Frame frame) {
-        List<Class> interfaces = new ArrayList<>();
-        for (String interfaceName : this.interfaceNames) {
-            Class tmp = Heap.findClass(interfaceName);
-            if (tmp == null) {
-                tmp = frame.method.clazz.classLoader.loadClass(interfaceName);
-            }
-
-            tmp.interfaceInit(frame);
-
-            interfaces.add(tmp);
-            if (!tmp.getStat()) {
-                Method cinit = tmp.getClinitMethod();
-                if (cinit == null) {
-                    throw new IllegalStateException();
-                }
-
-                tmp.setStat(1);
-                Interpreter.execute(cinit);
-                tmp.setStat(2);
-            }
-        }
-        this.setInterfaces(interfaces);
-    }
-
-    public boolean is(String clazz) {
-        if (this.name.equals(clazz)) {
-            return true;
-        }
-        for (String interfaceName : this.interfaceNames) {
-            if (Objects.equals(interfaceName, clazz)) {
-                return true;
-            }
-        }
-        if (this.superClass != null) {
-            return this.superClass.is(clazz);
-        }
-        return false;
-    }
 
 
     public Instance getRuntimeClass() {
@@ -227,7 +167,5 @@ public class Class {
         this.runtimeClass = runtimeClass;
     }
 
-    public String getSource() {
-        return classFile.getSourceFile();
-    }
+
 }

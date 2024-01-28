@@ -25,7 +25,7 @@ public class DirEntry implements Entry{
             }
             for (String name : list) {
                 if (Objects.equals(name, clazzName + ".class")) {
-                    String path = dirPath + EnvHolder.FILE_SEPARATOR + clazzName + ".class";
+                    String path = dirPath + '/' + clazzName + ".class";
                     ClassFile cf = null;
                     try {
                         cf = ClassReader.read(path);

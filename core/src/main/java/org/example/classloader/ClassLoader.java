@@ -41,7 +41,12 @@ public class ClassLoader {
 
     public Class doLoadClass(String name) {
         ClassFile clazz = entry.findClass(name);
-        if (name.equals("java/lang/Object")) return new Class(1,"java/lang/Object", null);
+
+        // 此处添加 java.lang.Object.class 的空实现
+        if (name.equals("java/lang/Object")) {
+            return new Class(1,"java/lang/Object", null);
+        }
+
         Class aClass = doLoadClass(name, clazz);
 
         // superclass
@@ -60,7 +65,6 @@ public class ClassLoader {
     public Class doLoadClass(String name, ClassFile classFile) {
         List<Method> methods = new ArrayList<>();
 
-        System.out.println("doLoadClass" + name + classFile.toString());
         for (MethodInfo methodInfo : classFile.methods.methodInfos) {
             methods.add(this.map(methodInfo));
         }

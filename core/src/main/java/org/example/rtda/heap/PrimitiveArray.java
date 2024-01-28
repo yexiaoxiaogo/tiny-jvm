@@ -2,9 +2,6 @@ package org.example.rtda.heap;
 
 public class PrimitiveArray extends ArrayInstance{
     public int[] ints;
-    public long[] longs;
-    public float[] floats;
-    public double[] doubles;
 
     public PrimitiveArray(Class clazz, int len) {
         super(clazz, len);

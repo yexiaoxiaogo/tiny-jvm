@@ -118,8 +118,8 @@ public abstract class Utils {
         final Frame old = env.popFrame();
 
         // 解释器同步执行方法的结束条件
-        if (old.stat == Const.FAKE_FRAME) {
-            old.stat = Const.FAKE_FRAME_END;
+        if (old.stat == Const.FRAME_RUNNING) {
+            old.stat = Const.FRAME_END;
         }
 
         if (slotSize == 0) {
@@ -143,42 +143,6 @@ public abstract class Utils {
         throw new IllegalStateException();
     }
 
-    /**
-     * 类初始化
-     */
-    public static void clinit(Class clazz) {
-        // 类在初始化中，或已完成初始化，直接返回
-        if (clazz.stat >= Const.CLASS_INITING) {
-            return;
-        }
-
-        // 递归初始化父类
-        if (clazz.getSuperClass() != null) {
-            clinit(clazz.getSuperClass());
-        }
-
-
-        // 初始化自身
-        final Method clinitMethod = clazz.getClinitMethod();
-    // 存在没有类初始化的情况
-        if (clinitMethod == null) {
-            clazz.stat = Const.CLASS_INITED;
-            return;
-        }
-
-        final NativeMethod nm = MetaSpace.findNativeMethod(clinitMethod.getKey());
-        if (nm != null) {
-            clazz.stat = Const.CLASS_INITING;
-            nm.invoke(MetaSpace.getMainEnv().topFrame());
-            clazz.stat = Const.CLASS_INITED;
-            return;
-        }
-
-        clazz.stat = Const.CLASS_INITING;
-        Frame newFrame = new Frame(clinitMethod);
-        Interpreter.execute(newFrame);
-        clazz.stat = Const.CLASS_INITED;
-    }
 
     public static void invokeMethod(Method method) {
         NativeMethod nmb = Heap.findMethod(Utils.genNativeMethodKey(method));
@@ -242,9 +206,5 @@ public abstract class Utils {
     public static String getTypeByNameAndTypeIdx(ConstantPool cp, int natIdx) {
         int idx = ((NameAndType) cp.infos[natIdx - 1]).descriptionIndex;
         return getString(cp, idx);
-    }
-
-    public static void doReturn1() {
-        doReturn(1);
     }
 }

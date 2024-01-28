@@ -46,14 +46,6 @@ public class Method {
         this.lineNumberTable = lineNumberTable;
     }
 
-    public String getReturnType() {
-        return this.descriptor.substring(this.descriptor.indexOf(")") + 1);
-    }
-
-    public List<String> getArgs() {
-        return Utils.parseMethodDescriptor(this.descriptor);
-    }
-
     public int getArgSlotSize() {
         int cnt = 0;
         for (String it : Utils.parseMethodDescriptor(this.descriptor)) {
@@ -92,10 +84,6 @@ public class Method {
 
     public boolean isStatic() {
         return (this.accessFlags & 0x0008) != 0;
-    }
-
-    public String nativeMethodKey() {
-        return Utils.genNativeMethodKey(this);
     }
 
     public int getLine(int pc) {

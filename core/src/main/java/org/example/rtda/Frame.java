@@ -62,29 +62,6 @@ public class Frame {
         return this.operandStack.popInt();
     }
 
-    public void pushLong(long val) {
-        this.operandStack.pushLong(val);
-    }
-
-    public long popLong() {
-        return this.operandStack.popLong();
-    }
-
-    public void pushFloat(float val) {
-        this.operandStack.pushFloat(val);
-    }
-
-    public float popFloat() {
-        return this.operandStack.popFloat();
-    }
-
-    public void pushDouble(double val) {
-        this.operandStack.pushDouble(val);
-    }
-
-    public double popDouble() {
-        return this.operandStack.popDouble();
-    }
 
     public void pushRef(Instance val) {
         this.operandStack.pushRef(val);
@@ -94,13 +71,6 @@ public class Frame {
         return this.operandStack.popRef();
     }
 
-    public Slot popSlot() {
-        return this.operandStack.popSlot();
-    }
-
-    public void pushSlot(Slot val) {
-        this.operandStack.pushSlot(val);
-    }
 
     // local vars operation
 
@@ -121,13 +91,6 @@ public class Frame {
         return this.localVars.getRef(index);
     }
 
-    public LocalVars getLocalVars() {
-        return this.localVars;
-    }
-
-    public OperandStack getOperandStack() {
-        return this.operandStack;
-    }
 
     public int getPc() {
         return pc;
@@ -149,18 +112,6 @@ public class Frame {
         return sb.toString();
     }
 
-    public String getCurrentMethodFullName() {
-        return this.method.clazz.name + "." + this.method.name;
-    }
-
-    public int getCurrentLine() {
-        return this.method.getLine(this.pc);
-    }
-
-    public String getCurrentSource() {
-        return this.method.clazz.getSource();
-    }
-
     public Slot pop() {
         return this.operandStack.popSlot();
     }
@@ -171,18 +122,5 @@ public class Frame {
 
     public void set(int i, Slot val) {
         this.localVars.set(i, val);
-    }
-
-    public Instance getThis(int size) {
-        final Slot[] slots = this.operandStack.getSlots();
-        return slots[this.operandStack.getTop() - size].ref;
-    }
-
-    public Long getLong(int index) {
-        return this.localVars.getLong(index);
-    }
-
-    public void setLong(int index, Long val) {
-        this.localVars.setLong(index, val);
     }
 }
