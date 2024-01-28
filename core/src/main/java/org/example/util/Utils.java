@@ -93,43 +93,7 @@ public abstract class Utils {
     }
 
     public static String classpath(String classpath) {
-        String home = java.lang.System.getenv("JAVA_HOME");
-        if (home == null) {
-            throw new IllegalStateException("must set env JAVA_HOME");
-        }
-
-        String jarPath = home + EnvHolder.FILE_SEPARATOR + "jre" + EnvHolder.FILE_SEPARATOR + "lib";
-
-        // check MINI_JVM_HOME ready
-        // 1. env
-        String miniJvmHome = System.getenv("MINI_JVM_HOME");
-        if (miniJvmHome == null) {
-            // 1.2 check current dir
-            String userDir = System.getProperty("user.dir");
-            if (userDir.endsWith("jvm-core")) {
-                int idx = userDir.lastIndexOf(EnvHolder.FILE_SEPARATOR);
-                miniJvmHome = userDir.substring(0, idx);
-            } else if (userDir.endsWith("mini-jvm")) {
-                miniJvmHome = userDir;
-            }
-        }
-        if (miniJvmHome == null) {
-            throw new IllegalStateException("MINI_JVM_HOME not found");
-        }
-
-        String rtJarPath = "/Users/yxx/Downloads/mini-jvm-master/mini-jdk/target/rt.jar";
-//                miniJvmHome + EnvHolder.FILE_SEPARATOR + "mini-jdk" + EnvHolder.FILE_SEPARATOR + "target"
-//                        + EnvHolder.FILE_SEPARATOR + "rt.jar";
-
-        if (!new File(rtJarPath).exists()) {
-            throw new IllegalStateException("rt.jar not found");
-        }
-
-        String cp = classpath + EnvHolder.PATH_SEPARATOR
-                + rtJarPath + EnvHolder.PATH_SEPARATOR
-                + jarPath + EnvHolder.FILE_SEPARATOR + "*";
-
-        return cp;
+        return classpath;
     }
 
     public static String replace(String src, char target, char replacement) {

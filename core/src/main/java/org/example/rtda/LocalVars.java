@@ -2,6 +2,9 @@ package org.example.rtda;
 
 import org.example.rtda.heap.Instance;
 
+/**
+ * 本地变量
+ */
 public class LocalVars {
     private final Slot[] slots;
 

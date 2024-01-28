@@ -6,6 +6,10 @@ import org.example.util.Logger;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * 堆,线程共享的内存区域
+ * 运行时数据区域，存放对象实例
+ */
 public abstract class Heap {
     private static final Map<String, NativeMethod> NATIVE_METHOD_MAP;
     private static final Map<String, Class> STRING_K_CLASS_MAP;

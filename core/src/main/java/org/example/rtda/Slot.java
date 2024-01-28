@@ -2,6 +2,9 @@ package org.example.rtda;
 
 import org.example.rtda.heap.Instance;
 
+/**
+ * 最基本的存储单元
+ */
 public class Slot {
     public Integer num;
     /**
