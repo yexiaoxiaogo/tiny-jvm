@@ -31,6 +31,6 @@ public class Interpreter {
             instruction.execute(frame);
         } while (newFrame.stat == Const.FRAME_RUNNING);
 
-        System.out.println("execute result: \n" + newFrame.debugLocalVars(""));
+        System.out.println("execute result: \n" + newFrame.getLocalVars());
     }
 }

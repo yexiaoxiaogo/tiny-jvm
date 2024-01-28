@@ -52,6 +52,10 @@ public class Frame {
         return this.instructionMap.get(this.pc);
     }
 
+    public String getLocalVars() {
+        return this.localVars.toString();
+    }
+
     // operand stack operation
 
     public void pushInt(int val) {
@@ -67,11 +71,6 @@ public class Frame {
         this.operandStack.pushRef(val);
     }
 
-    public Instance popRef() {
-        return this.operandStack.popRef();
-    }
-
-
     // local vars operation
 
     public void setInt(int index, int val) {
@@ -82,35 +81,10 @@ public class Frame {
         return this.localVars.getInt(index);
     }
 
-
-    public void setRef(int index, Instance ref) {
-        this.localVars.setRef(index, ref);
-    }
-
     public Instance getRef(int index) {
         return this.localVars.getRef(index);
     }
 
-
-    public int getPc() {
-        return pc;
-    }
-
-    public String debugNextPc(String space) {
-        return space.concat("nextPc = ").concat(Integer.toString(nextPc)).concat("\n");
-    }
-
-    public String debugLocalVars(String space) {
-        StringBuilder sb = new StringBuilder();
-        sb.append(localVars.debug(space));
-        return sb.toString();
-    }
-
-    public String debugOperandStack(String space) {
-        StringBuilder sb = new StringBuilder();
-        sb.append(operandStack.debug(space));
-        return sb.toString();
-    }
 
     public Slot pop() {
         return this.operandStack.popSlot();

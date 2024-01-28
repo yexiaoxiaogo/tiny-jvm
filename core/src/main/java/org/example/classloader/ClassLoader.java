@@ -40,12 +40,13 @@ public class ClassLoader {
     }
 
     public Class doLoadClass(String name) {
-        ClassFile clazz = entry.findClass(name);
 
         // 此处添加 java.lang.Object.class 的空实现
         if (name.equals("java/lang/Object")) {
             return new Class(1,"java/lang/Object", null);
         }
+
+        ClassFile clazz = entry.findClass(name);
 
         Class aClass = doLoadClass(name, clazz);
 

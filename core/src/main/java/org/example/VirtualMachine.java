@@ -1,7 +1,6 @@
 package org.example;
 
 import org.example.classpath.Entry;
-import org.example.nativebridge.java.lang.ObjectBridge;
 import org.example.rtda.heap.*;
 import org.example.rtda.heap.Class;
 import org.example.classpath.Classpath;
@@ -19,7 +18,7 @@ public class VirtualMachine {
         Entry entry = Classpath.parse(cmd.classpath);
         ClassLoader classLoader = new ClassLoader("boot", entry);
 
-        // 初始化 java/lang/Ojbect
+        // 初始化
         initVm(classLoader);
 
         // 加载主类
@@ -36,11 +35,5 @@ public class VirtualMachine {
 
     public static void initVm(ClassLoader classLoader) {
         MetaSpace.main = new Thread(1024);
-        loadLibrary();
     }
-
-    public static void loadLibrary() {
-        ObjectBridge.registerNatives0();
-    }
-
 }

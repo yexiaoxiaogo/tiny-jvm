@@ -12,20 +12,6 @@ package org.example.classpath;
  */
 public abstract class Classpath {
     public static Entry parse(String classpath) {
-        Entry entry = parseEntry(classpath);
-        if (entry == null) {
-            throw new IllegalArgumentException("un parse classpath " + classpath);
-        }
-        // ./:./*:lib/:lib/*:.*
-        return entry;
-    }
-
-
-    public static Entry parseEntry(String path) {
-        return doParseDir(path);
-    }
-
-    public static Entry doParseDir(String path) {
-        return new DirEntry(path);
+        return new DirEntry(classpath);
     }
 }
