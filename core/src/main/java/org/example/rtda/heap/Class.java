@@ -16,7 +16,7 @@ public class Class {
     public final String superClassName;
     public final List<String> interfaceNames;
     public final List<Method> methods;
-    public final List<Field> fields;
+//    public final List<Field> fields;
     public final BootstrapMethods bootstrapMethods;
     public final ConstantPool constantPool;
     public final ClassLoader classLoader;
@@ -39,7 +39,7 @@ public class Class {
         this.constantPool = null;
         this.classLoader = classLoader;
         this.methods = new ArrayList<>();
-        this.fields = new ArrayList<>();
+//        this.fields = new ArrayList<>();
         this.stat = 2;
     }
 
@@ -54,7 +54,7 @@ public class Class {
         this.constantPool = null;
         this.classLoader = classLoader;
         this.methods = new ArrayList<>();
-        this.fields = new ArrayList<>();
+//        this.fields = new ArrayList<>();
         this.stat = 2;
     }
 
@@ -64,7 +64,7 @@ public class Class {
             String superClassName,
             List<String> interfaceNames,
             List<Method> methods,
-            List<Field> fields,
+//            List<Field> fields,
             BootstrapMethods bootstrapMethods,
             ConstantPool constantPool,
             ClassLoader classLoader,
@@ -76,7 +76,7 @@ public class Class {
         this.classFile = classFile;
         this.interfaces = new ArrayList<>();
         this.methods = methods;
-        this.fields = fields;
+//        this.fields = fields;
         this.bootstrapMethods = bootstrapMethods;
         this.constantPool = constantPool;
         this.classLoader = classLoader;
@@ -118,29 +118,12 @@ public class Class {
         this.superClass = superClass;
     }
 
-    public Class getSuperClass() {
-        return this.superClass;
-    }
-
     public Instance newInstance() {
-        List<Field> newFields = new ArrayList<>();
-        for (Field field : fields) {
-            newFields.add(this.map(field));
-        }
-        Instance object = new Instance(newFields, this);
+        Instance object = new Instance(this);
         if (this.superClass != null) {
             object.setSuperInstance(this.superClass.newInstance());
         }
         return object;
-    }
-
-    private Field map(Field source) {
-        if (source.isStatic()) {
-            return source;
-        }
-        final Field field = new Field(source.accessFlags, source.name, source.descriptor);
-        field.init();
-        return field;
     }
 
 
@@ -150,17 +133,11 @@ public class Class {
                 "name='" + name + '\'' +
                 ", superClassName='" + superClassName + '\'' +
                 ", methods=" + methods.size() +
-                ", fields=" + fields.size() +
+//                ", fields=" + fields.size() +
                 ", classLoader=" + classLoader.getClass().getName() +
                 ", superClass=" + (superClass == null ? "null" : superClass.name) +
                 ", staticInit=" + stat +
                 '}';
-    }
-
-
-
-    public Instance getRuntimeClass() {
-        return runtimeClass;
     }
 
     public void setRuntimeClass(Instance runtimeClass) {

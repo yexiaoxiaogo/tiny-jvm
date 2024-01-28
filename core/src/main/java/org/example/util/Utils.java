@@ -91,19 +91,6 @@ public abstract class Utils {
         return clazz + "_" + name + "_" + descriptor;
     }
 
-    public static Instance str2Obj(String str, ClassLoader classLoader) {
-        Class klass = Heap.findClass("java/lang/String");
-        Instance object = klass.newInstance();
-        Field field = object.getField("value", "[C");
-        char[] chars = str.toCharArray();
-        final PrimitiveArray arr = PrimitiveArray.charArray(chars.length);
-        for (int i = 0; i < chars.length; i++) {
-            arr.ints[i] = chars[i];
-        }
-
-        field.val = UnionSlot.of(arr);
-        return object;
-    }
 
     public static void doReturn0() {
         doReturn(0);
@@ -145,32 +132,18 @@ public abstract class Utils {
 
 
     public static void invokeMethod(Method method) {
-        NativeMethod nmb = Heap.findMethod(Utils.genNativeMethodKey(method));
-        if (nmb != null) {
-            nmb.invoke(MetaSpace.getMainEnv().topFrame());
-            return;
+
+        Frame newFrame = new Frame(method);
+        final Thread env = MetaSpace.getMainEnv();
+        final Frame old = env.topFrame();
+
+        // 传参
+        final int slots = method.getArgSlotSize();
+        for (int i = slots - 1; i >= 0; i--) {
+            newFrame.set(i, old.pop());
         }
 
-        if (Utils.isNative(method.accessFlags)) {
-            final String key = method.getKey();
-            NativeMethod nm = MetaSpace.findNativeMethod(key);
-            if (nm == null) {
-                throw new IllegalStateException("not found native method: " + key);
-            }
-            nm.invoke(MetaSpace.getMainEnv().topFrame());
-        } else {
-            Frame newFrame = new Frame(method);
-            final Thread env = MetaSpace.getMainEnv();
-            final Frame old = env.topFrame();
-
-            // 传参
-            final int slots = method.getArgSlotSize();
-            for (int i = slots - 1; i >= 0; i--) {
-                newFrame.set(i, old.pop());
-            }
-
-            env.pushFrame(newFrame);
-        }
+        env.pushFrame(newFrame);
     }
 
     /**

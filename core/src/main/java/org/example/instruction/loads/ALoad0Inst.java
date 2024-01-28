@@ -12,9 +12,4 @@ public class ALoad0Inst implements Instruction {
     Instance tmp = frame.getRef(0);
     frame.pushRef(tmp);
   }
-
-  @Override
-  public String format() {
-    return "aload_0";
-  }
 }

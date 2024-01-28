@@ -5,7 +5,6 @@ import org.example.rtda.Frame;
 import org.example.rtda.heap.Heap;
 import org.example.rtda.heap.Class;
 import org.example.rtda.heap.Method;
-import org.example.rtda.heap.NativeMethod;
 import org.example.util.Utils;
 
 public class InvokeSpecialInst implements Instruction {
@@ -26,11 +25,6 @@ public class InvokeSpecialInst implements Instruction {
 
     @Override
     public void execute(Frame frame) {
-        NativeMethod nm = Heap.findMethod(Utils.genNativeMethodKey(clazz, methodName, methodDescriptor));
-        if (nm != null) {
-            nm.invoke(frame);
-            return;
-        }
 
         Class aClass = Heap.findClass(clazz);
         if (aClass == null) {
@@ -48,10 +42,5 @@ public class InvokeSpecialInst implements Instruction {
         }
 
         Utils.invokeMethod(method);
-    }
-
-    @Override
-    public String format() {
-        return "invokespecail " + clazz + " " + methodName + " " + methodDescriptor;
     }
 }

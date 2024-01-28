@@ -9,9 +9,4 @@ public class ILoad1Inst implements Instruction {
         Integer tmp = frame.getInt(1);
         frame.pushInt(tmp);
     }
-
-    @Override
-    public String format() {
-        return "iload_1";
-    }
 }

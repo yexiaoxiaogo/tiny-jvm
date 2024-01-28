@@ -19,7 +19,7 @@ public class VirtualMachine {
         ClassLoader classLoader = new ClassLoader("boot", entry);
 
         // 初始化
-        initVm(classLoader);
+        MetaSpace.main = new Thread(1024);
 
         // 加载主类
         String mainClass = cmd.clazz;
@@ -31,9 +31,5 @@ public class VirtualMachine {
 
         //运行主函数
         Interpreter.runMain(method);
-    }
-
-    public static void initVm(ClassLoader classLoader) {
-        MetaSpace.main = new Thread(1024);
     }
 }

@@ -9,9 +9,4 @@ public class ReturnInst implements Instruction {
     public void execute(Frame frame) {
         Utils.doReturn0();
     }
-
-    @Override
-    public String format() {
-        return "return";
-    }
 }

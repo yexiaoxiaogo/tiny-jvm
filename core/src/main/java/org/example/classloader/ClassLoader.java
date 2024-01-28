@@ -1,7 +1,6 @@
 package org.example.classloader;
 
 import org.example.classfile.ClassFile;
-import org.example.classfile.FieldInfo;
 import org.example.classfile.Interface;
 import org.example.classfile.MethodInfo;
 import org.example.classfile.attribute.BootstrapMethods;
@@ -69,17 +68,6 @@ public class ClassLoader {
         for (MethodInfo methodInfo : classFile.methods.methodInfos) {
             methods.add(this.map(methodInfo));
         }
-        List<Field> fields = new ArrayList<>();
-        for (FieldInfo fieldInfo : classFile.fields.fieldInfos) {
-            fields.add(this.map(fieldInfo));
-        }
-
-        // field interfaceInit
-        for (Field it : fields) {
-            if (it.isStatic()) {
-                it.init();
-            }
-        }
 
         int scIdx = classFile.superClass;
         String superClassName = null;
@@ -96,7 +84,7 @@ public class ClassLoader {
 
         BootstrapMethods bootstrapMethods = classFile.getBootstrapMethods();
 
-        return new Class(classFile.accessFlags, name, superClassName, interfaceNames, methods, fields,
+        return new Class(classFile.accessFlags, name, superClassName, interfaceNames, methods,
                 bootstrapMethods, classFile.cpInfo, this, classFile);
     }
 
@@ -111,21 +99,8 @@ public class ClassLoader {
                 cfMethodInfo.getLineNumber());
     }
 
-    public Field map(FieldInfo fieldInfo) {
-        return new Field(fieldInfo.accessFlags, fieldInfo.name, fieldInfo.descriptor.descriptor);
-    }
-
     public void doRegister(Class clazz) {
         Heap.registerClass(clazz.name, clazz);
-        for (Method method : clazz.methods) {
-            if (method.isNative()) {
-                String key = Utils.genNativeMethodKey(method.clazz.name, method.name, method.descriptor);
-                NativeMethod nm = Heap.findMethod(key);
-                if (nm == null) {
-                    System.err.println("not found native method " + key + " " + method);
-                }
-            }
-        }
     }
 
 }

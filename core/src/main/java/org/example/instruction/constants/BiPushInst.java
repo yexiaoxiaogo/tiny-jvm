@@ -22,8 +22,4 @@ public class BiPushInst implements Instruction {
     frame.pushInt((int) (this.val));
   }
 
-  @Override
-  public String format() {
-    return "bipush " + val;
-  }
 }
