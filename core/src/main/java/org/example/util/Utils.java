@@ -38,10 +38,6 @@ public abstract class Utils {
         return ((Utf8) cp.infos[index - 1]).getString();
     }
 
-    public static String genNativeMethodKey(Method method) {
-        return genNativeMethodKey(method.clazz.name, method.name, method.descriptor);
-    }
-
     public static List<String> parseMethodDescriptor(String descriptor) {
         if (descriptor.startsWith("()")) {
             return new ArrayList<>();
@@ -81,14 +77,6 @@ public abstract class Utils {
             }
         }
         return rets;
-    }
-
-    public static boolean isStatic(int accessFlags) {
-        return (accessFlags & Const.ACC_STATIC) != 0;
-    }
-
-    public static String genNativeMethodKey(String clazz, String name, String descriptor) {
-        return clazz + "_" + name + "_" + descriptor;
     }
 
 
@@ -144,13 +132,6 @@ public abstract class Utils {
         }
 
         env.pushFrame(newFrame);
-    }
-
-    /**
-     * 判定访问标志是否是 native
-     */
-    public static boolean isNative(int accessFlags) {
-        return (accessFlags & Const.ACC_NATIVE) != 0;
     }
 
     public static String getClassNameByMethodDefIdx(ConstantPool constantPool, int mdIdx) {

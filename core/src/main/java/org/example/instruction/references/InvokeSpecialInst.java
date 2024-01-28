@@ -27,19 +27,8 @@ public class InvokeSpecialInst implements Instruction {
     public void execute(Frame frame) {
 
         Class aClass = Heap.findClass(clazz);
-        if (aClass == null) {
-            throw new IllegalStateException();
-        }
 
         Method method = aClass.getMethod(methodName, methodDescriptor);
-        if (method == null) {
-            System.out.println(Utils.genNativeMethodKey(clazz, methodName, methodDescriptor));
-            throw new IllegalStateException();
-        }
-
-        if (method.isNative()) {
-            throw new IllegalStateException("un impl native method call, " + method);
-        }
 
         Utils.invokeMethod(method);
     }

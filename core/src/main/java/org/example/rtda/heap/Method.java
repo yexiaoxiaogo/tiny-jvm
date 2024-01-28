@@ -59,9 +59,6 @@ public class Method {
             }
             cnt++;
         }
-        if (!Utils.isStatic(this.accessFlags)) {
-            cnt++;
-        }
         return cnt;
     }
 
@@ -86,30 +83,5 @@ public class Method {
         return (this.accessFlags & 0x0008) != 0;
     }
 
-    public int getLine(int pc) {
-        int ret = 0;
-        for (LineNumberTable.Line line : this.lineNumberTable.lines) {
-            if (line.startPc <= pc) {
-                ret = line.lineNumber;
-            } else {
-                break;
-            }
-        }
-        return ret;
-    }
 
-    public String getKey() {
-        return Utils.genNativeMethodKey(this);
-    }
-
-    public Integer getHandlerPc(Integer pc, String name) {
-        for (Exception exception : this.exceptionTable.exceptions) {
-            if (exception.clazz == null || Objects.equals(exception.clazz, name)) {
-                if (pc >= exception.startPc && pc < exception.endPc) {
-                    return exception.handlerPc;
-                }
-            }
-        }
-        return null;
-    }
 }

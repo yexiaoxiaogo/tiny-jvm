@@ -29,10 +29,6 @@ public class Thread {
         return frame;
     }
 
-    public int size() {
-        return this.top;
-    }
-
     // 当前栈顶栈帧
     public Frame topFrame() {
         return this.frames[top - 1];

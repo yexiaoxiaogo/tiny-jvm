@@ -23,10 +23,6 @@ public class LocalVars {
         return slots[index].num;
     }
 
-    public void setRef(int index, Instance ref) {
-        slots[index] = new Slot(ref);
-    }
-
     public Instance getRef(int index) {
         return slots[index].ref;
     }

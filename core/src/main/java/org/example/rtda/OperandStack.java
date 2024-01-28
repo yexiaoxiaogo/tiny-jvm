@@ -38,9 +38,6 @@ public class OperandStack {
         this.push(new Slot(val));
     }
 
-    public Instance popRef() {
-        return this.pop().ref;
-    }
     public Slot popSlot() {
         return this.pop();
     }
