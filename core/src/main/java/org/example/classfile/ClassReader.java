@@ -166,7 +166,6 @@ public abstract class ClassReader {
             int tag = is.readUnsignedByte();
 
             int infoEnum = tag;
-
             ConstantInfo info = null;
             switch (infoEnum) {
                 case ConstantPoolInfoEnum.CONSTANT_Methodref:
@@ -184,14 +183,7 @@ public abstract class ClassReader {
                     info = new Utf8(infoEnum, bytes);
                     break;
             }
-            if (info == null) {
-                throw new UnsupportedOperationException("un parse cp " + infoEnum);
-            }
             constantPool.infos[i] = info;
-            if (info.infoEnum == ConstantPoolInfoEnum.CONSTANT_Double
-                    || info.infoEnum == ConstantPoolInfoEnum.CONSTANT_Long) {
-                i++;
-            }
         }
         return constantPool;
     }
@@ -252,22 +244,6 @@ public abstract class ClassReader {
                         lines[i1] = new LineNumberTable.Line(is.readUnsignedShort(), is.readUnsignedShort());
                     }
                     attribute = new LineNumberTable(lines);
-                    break;
-                case AttributeEnum.BootstrapMethods:
-                    int bsmLen = is.readUnsignedShort();
-                    BootstrapMethods.BootstrapMethod[] bootstrapMethods = new BootstrapMethods.BootstrapMethod[bsmLen];
-                    for (int i1 = 0; i1 < bsmLen; i1++) {
-                        int bsmr = is.readUnsignedShort();
-                        int nbma = is.readUnsignedShort();
-                        Integer[] args = new Integer[nbma];
-                        for (int i2 = 0; i2 < nbma; i2++) {
-                            args[i2] = is.readUnsignedShort();
-                        }
-
-                        bootstrapMethods[i1] = new BootstrapMethods.BootstrapMethod(bsmr, args);
-                    }
-
-                    attribute = new BootstrapMethods(bootstrapMethods);
                     break;
                 default:
                     byte[] bytes = Utils.readNBytes(is, attributeLength);

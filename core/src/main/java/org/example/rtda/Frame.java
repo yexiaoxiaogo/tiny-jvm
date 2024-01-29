@@ -39,14 +39,6 @@ public class Frame {
         this.instructionMap = method.instructionMap;
     }
 
-    public Frame(Method method, LocalVars localVars, Thread thread) {
-        this.method = method;
-        this.localVars = localVars;
-        this.operandStack = new OperandStack(method.maxStacks);
-        this.thread = thread;
-        this.instructionMap = method.instructionMap;
-    }
-
     public Instruction getInst() {
         this.pc = nextPc;
         return this.instructionMap.get(this.pc);

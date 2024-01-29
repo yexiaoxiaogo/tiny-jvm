@@ -1,15 +1,12 @@
 package org.example.rtda.heap;
 
-import org.example.classfile.Exception;
 import org.example.classfile.ExceptionTable;
 import org.example.classfile.attribute.LineNumberTable;
-
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-
 import org.example.instruction.Instruction;
 import org.example.util.Utils;
+
+import java.util.Map;
+import java.util.Objects;
 
 public class Method {
     /**
@@ -74,14 +71,5 @@ public class Method {
                 ", clazz=" + clazz.name +
                 '}';
     }
-
-    public boolean isNative() {
-        return (this.accessFlags & 0x0100) != 0;
-    }
-
-    public boolean isStatic() {
-        return (this.accessFlags & 0x0008) != 0;
-    }
-
 
 }

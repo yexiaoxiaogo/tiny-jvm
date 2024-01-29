@@ -49,23 +49,6 @@ public class ClassFile {
         this.attributes = attributes;
     }
 
-    public void setSource(String source) {
-        this.source = source;
-    }
-
-    public String getSource() {
-        return source;
-    }
-
-    public String getSourceFile() {
-        for (Attribute attribute : this.attributes.attributes) {
-            if (attribute instanceof SourceFile) {
-                return ((SourceFile) attribute).name;
-            }
-        }
-        return "unknown";
-    }
-
     public BootstrapMethods getBootstrapMethods() {
         for (Attribute attribute : attributes.attributes) {
             if (attribute instanceof BootstrapMethods) {

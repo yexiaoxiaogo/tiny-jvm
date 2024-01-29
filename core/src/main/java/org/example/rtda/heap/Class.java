@@ -16,7 +16,6 @@ public class Class {
     public final String superClassName;
     public final List<String> interfaceNames;
     public final List<Method> methods;
-//    public final List<Field> fields;
     public final BootstrapMethods bootstrapMethods;
     public final ConstantPool constantPool;
     public final ClassLoader classLoader;
@@ -27,21 +26,6 @@ public class Class {
     public int stat = 0;
 
     private Instance runtimeClass;
-
-    public Class(int accessFlags, String name, ClassLoader classLoader, ClassFile classFile) {
-        this.accessFlags = accessFlags;
-        this.name = name;
-        this.classFile = classFile;
-        this.superClassName = "java/lang/Object";
-        this.interfaceNames = new ArrayList<>();
-        this.interfaces = new ArrayList<>();
-        this.bootstrapMethods = null;
-        this.constantPool = null;
-        this.classLoader = classLoader;
-        this.methods = new ArrayList<>();
-//        this.fields = new ArrayList<>();
-        this.stat = 2;
-    }
 
     public Class(int accessFlags, String name, ClassLoader classLoader) {
         this.accessFlags = accessFlags;
@@ -54,7 +38,6 @@ public class Class {
         this.constantPool = null;
         this.classLoader = classLoader;
         this.methods = new ArrayList<>();
-//        this.fields = new ArrayList<>();
         this.stat = 2;
     }
 
@@ -64,7 +47,6 @@ public class Class {
             String superClassName,
             List<String> interfaceNames,
             List<Method> methods,
-//            List<Field> fields,
             BootstrapMethods bootstrapMethods,
             ConstantPool constantPool,
             ClassLoader classLoader,
@@ -76,7 +58,6 @@ public class Class {
         this.classFile = classFile;
         this.interfaces = new ArrayList<>();
         this.methods = methods;
-//        this.fields = fields;
         this.bootstrapMethods = bootstrapMethods;
         this.constantPool = constantPool;
         this.classLoader = classLoader;
@@ -133,7 +114,6 @@ public class Class {
                 "name='" + name + '\'' +
                 ", superClassName='" + superClassName + '\'' +
                 ", methods=" + methods.size() +
-//                ", fields=" + fields.size() +
                 ", classLoader=" + classLoader.getClass().getName() +
                 ", superClass=" + (superClass == null ? "null" : superClass.name) +
                 ", staticInit=" + stat +
