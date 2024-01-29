@@ -1,17 +1,15 @@
 package org.example.classfile;
 
-import org.example.classfile.attribute.BootstrapMethods;
 import org.example.classfile.attribute.Code;
 import org.example.classfile.attribute.LineNumberTable;
-import org.example.classfile.attribute.SourceFile;
-import org.example.classfile.cp.*;
+import org.example.classfile.cp.ClassCp;
+import org.example.classfile.cp.MethodDef;
+import org.example.classfile.cp.NameAndType;
+import org.example.classfile.cp.Utf8;
 import org.example.instruction.Instruction;
 import org.example.util.Utils;
 
-import java.io.DataInputStream;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -60,12 +58,11 @@ public abstract class ClassReader {
         //接口数
         int interfaceCount = is.readUnsignedShort();
         //解析接口结构类
-        Interfaces interfaces = readInterfaces(is, interfaceCount, constantPool);
 
         //字段数
         int fieldCount = is.readUnsignedShort();
-        //解析字段结构
-        Fields fields = readFields(is, fieldCount, constantPool);
+        //解析字段结构 null
+
 
         //方法数
         int methodCount = is.readUnsignedShort();
@@ -88,47 +85,12 @@ public abstract class ClassReader {
                 thisClass,
                 superClass,
                 interfaceCount,
-                interfaces,
                 fieldCount,
-                fields,
                 methodCount,
                 methods,
                 attributeCount,
                 attributes
         );
-    }
-
-    private static Fields readFields(DataInputStream is, int fieldCount, ConstantPool constantPool)
-            throws IOException {
-        FieldInfo[] fieldInfos = new FieldInfo[fieldCount];
-        for (int i = 0; i < fieldCount; i++) {
-            int accessFlag = is.readUnsignedShort();
-            int nameIndex = is.readUnsignedShort();
-            int descriptorIndex = is.readUnsignedShort();
-            int attributesCount = is.readUnsignedShort();
-
-            Attributes attributes = readAttributes(is, attributesCount, constantPool);
-
-            ConstantInfo info = constantPool.infos[nameIndex - 1];
-            String name = ((Utf8) info).getString();
-
-            String descriptor = ((Utf8) constantPool.infos[descriptorIndex - 1]).getString();
-
-            FieldInfo fieldInfo = new FieldInfo(accessFlag, name, new Descriptor(descriptor), attributes);
-            fieldInfos[i] = fieldInfo;
-        }
-        return new Fields(fieldInfos);
-    }
-
-    private static Interfaces readInterfaces(DataInputStream is, int interfaceCount, ConstantPool cp)
-            throws IOException {
-        Interface[] interfaces = new Interface[interfaceCount];
-        for (int i = 0; i < interfaceCount; i++) {
-            int idx = is.readUnsignedShort();
-            String name = Utils.getClassName(cp, idx);
-            interfaces[i] = new Interface(name);
-        }
-        return new Interfaces(interfaces);
     }
 
     //method_info {
@@ -203,7 +165,7 @@ public abstract class ClassReader {
                 case AttributeEnum.SourceFile:
                     int sourceFileIndex = is.readUnsignedShort();
                     String file = Utils.getString(constantPool, sourceFileIndex);
-                    attribute = new SourceFile(file);
+                    System.out.println("source file:" + file);
                     break;
                 case AttributeEnum.Code:
                     int maxStack = is.readUnsignedShort();
@@ -214,28 +176,14 @@ public abstract class ClassReader {
 
                     Instruction[] instructions = readByteCode(byteCode, constantPool);
 
-                    int exceptionTableLength = is.readUnsignedShort();
-                    Exception[] exceptions = new Exception[exceptionTableLength];
-                    for (int i1 = 0; i1 < exceptionTableLength; i1++) {
-                        int etsp = is.readUnsignedShort();
-                        int etep = is.readUnsignedShort();
-                        int ethp = is.readUnsignedShort();
-                        int ctIdx = is.readUnsignedShort();
+                    // exceptionTableLength 为空
+                    is.readUnsignedShort();
 
-                        // null => catch any exception
-                        String etClassname = null;
-                        if (ctIdx != 0) {
-                            etClassname = Utils.getClassName(constantPool, ctIdx);
-                        }
-
-                        Exception exception = new Exception(etsp, etep, ethp, etClassname);
-                        exceptions[i1] = exception;
-                    }
-                    ExceptionTable exceptionTable = new ExceptionTable(exceptions);
+                    //
                     int codeAttributeCount = is.readUnsignedShort();
                     Attributes codeAttributes = readAttributes(is, codeAttributeCount, constantPool);
 
-                    attribute = new Code(maxStack, maxLocals, instructions, exceptionTable, codeAttributes);
+                    attribute = new Code(maxStack, maxLocals, instructions, codeAttributes);
                     break;
                 case AttributeEnum.LineNumberTable:
                     int length = is.readUnsignedShort();
@@ -246,8 +194,7 @@ public abstract class ClassReader {
                     attribute = new LineNumberTable(lines);
                     break;
                 default:
-                    byte[] bytes = Utils.readNBytes(is, attributeLength);
-//          System.out.println("bytes = " + byteArrayToHex(bytes));
+                    Utils.readNBytes(is, attributeLength);
             }
 
             attributes.attributes[i] = attribute;
@@ -259,7 +206,7 @@ public abstract class ClassReader {
     public static Instruction[] readByteCode(byte[] byteCode, ConstantPool constantPool)
             throws IOException {
         List<Instruction> instructions = new ArrayList<>();
-        try (MyDataInputStream stm = new MyDataInputStream(new MyByteArrayInputStream(byteCode))) {
+        try (DataInputStream stm = new DataInputStream(new ByteArrayInputStream(byteCode))) {
             while (stm.available() > 0) {
                 int opCode = stm.readUnsignedByte();
                 try {

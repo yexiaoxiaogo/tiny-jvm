@@ -19,7 +19,7 @@ public class BiPushInst implements Instruction {
 
   @Override
   public void execute(Frame frame) {
-    frame.pushInt((int) (this.val));
+    frame.pushInt(this.val);
   }
 
 }

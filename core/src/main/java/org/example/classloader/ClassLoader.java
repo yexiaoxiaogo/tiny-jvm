@@ -1,13 +1,13 @@
 package org.example.classloader;
 
 import org.example.classfile.ClassFile;
-import org.example.classfile.Interface;
 import org.example.classfile.MethodInfo;
-import org.example.classfile.attribute.BootstrapMethods;
 import org.example.classfile.attribute.Code;
 import org.example.classpath.Entry;
-import org.example.rtda.heap.*;
 import org.example.rtda.heap.Class;
+import org.example.rtda.heap.Heap;
+import org.example.rtda.heap.Instance;
+import org.example.rtda.heap.Method;
 import org.example.util.Utils;
 
 import java.util.ArrayList;
@@ -75,27 +75,19 @@ public class ClassLoader {
             superClassName = Utils.getClassName(classFile.cpInfo, scIdx);
         }
 
-        List<String> interfaceNames = new ArrayList<>();
-        if (classFile.interfaces.interfaces.length != 0) {
-            for (Interface anInterface : classFile.interfaces.interfaces) {
-                interfaceNames.add(anInterface.getName());
-            }
-        }
 
-        BootstrapMethods bootstrapMethods = classFile.getBootstrapMethods();
-
-        return new Class(classFile.accessFlags, name, superClassName, interfaceNames, methods,
-                bootstrapMethods, classFile.cpInfo, this, classFile);
+        return new Class(classFile.accessFlags, name, superClassName, null, methods,
+                classFile.cpInfo, this, classFile);
     }
 
     public Method map(MethodInfo cfMethodInfo) {
         Code code = cfMethodInfo.getCode();
         if (code == null) {
             return new Method(cfMethodInfo.accessFlags, cfMethodInfo.name, cfMethodInfo.descriptor.descriptor, 0, 0,
-                    null, null, cfMethodInfo.getLineNumber());
+                    null, cfMethodInfo.getLineNumber());
         }
         return new Method(cfMethodInfo.accessFlags, cfMethodInfo.name, cfMethodInfo.descriptor.descriptor,
-                code.maxStacks, code.maxLocals, code.getInstructions(), code.exceptionTable,
+                code.maxStacks, code.maxLocals, code.getInstructions(),
                 cfMethodInfo.getLineNumber());
     }
 

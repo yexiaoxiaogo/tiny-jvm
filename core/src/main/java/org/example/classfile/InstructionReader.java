@@ -1,20 +1,22 @@
 package org.example.classfile;
 
+import org.example.instruction.EmptyInstruction;
 import org.example.instruction.Instruction;
-import org.example.instruction.constants.*;
+import org.example.instruction.constants.BiPushInst;
 import org.example.instruction.control.ReturnInst;
-import org.example.instruction.loads.*;
+import org.example.instruction.loads.ALoad0Inst;
+import org.example.instruction.loads.ILoad1Inst;
+import org.example.instruction.loads.ILoad2Inst;
 import org.example.instruction.math.IAddInst;
-import org.example.instruction.references.*;
 import org.example.instruction.stores.IStore1Inst;
 import org.example.instruction.stores.IStore2Inst;
 import org.example.instruction.stores.IStore3Inst;
-import org.example.util.Utils;
 
+import java.io.DataInputStream;
 import java.io.IOException;
 
 public abstract class InstructionReader {
-    public static Instruction read(int opCode, MyDataInputStream stm, ConstantPool constantPool)
+    public static Instruction read(int opCode, DataInputStream stm, ConstantPool constantPool)
             throws IOException {
         switch (opCode) {
             case 0x10:
@@ -43,12 +45,9 @@ public abstract class InstructionReader {
                 return new ReturnInst();
 
             case 0xb7:
-                int isIndex = stm.readUnsignedShort();
-                return new InvokeSpecialInst(
-                        Utils.getClassNameByMethodDefIdx(constantPool, isIndex),
-                        Utils.getMethodNameByMethodDefIdx(constantPool, isIndex),
-                        Utils.getMethodTypeByMethodDefIdx(constantPool, isIndex)
-                );
+                // classfile中b7读走消费
+                stm.readUnsignedShort();
+                return new EmptyInstruction();
             default:
                 return null;
         }

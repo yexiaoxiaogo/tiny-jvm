@@ -24,10 +24,9 @@ public class Slot {
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("Slot{");
-        sb.append("num=").append(num);
-        sb.append(", ref=").append(ref);
-        sb.append('}');
-        return sb.toString();
+        String sb = "Slot{" + "num=" + num +
+                ", ref=" + ref +
+                '}';
+        return sb;
     }
 }

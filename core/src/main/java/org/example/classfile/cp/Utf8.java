@@ -1,7 +1,8 @@
 package org.example.classfile.cp;
 
 import org.example.classfile.ConstantInfo;
-import org.example.classfile.MyByteArrayInputStream;
+
+import java.io.ByteArrayInputStream;
 
 public class Utf8 extends ConstantInfo {
     public final byte[] bytes;
@@ -13,7 +14,7 @@ public class Utf8 extends ConstantInfo {
 
     public final String getString() {
 
-        MyByteArrayInputStream is = new MyByteArrayInputStream(bytes);
+        ByteArrayInputStream is = new ByteArrayInputStream(bytes);
         StringBuilder sb = new StringBuilder();
         while (is.available() > 0) {
             int b = is.read();

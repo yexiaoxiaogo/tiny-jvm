@@ -1,6 +1,5 @@
 package org.example.rtda.heap;
 
-import org.example.classfile.ExceptionTable;
 import org.example.classfile.attribute.LineNumberTable;
 import org.example.instruction.Instruction;
 import org.example.util.Utils;
@@ -25,13 +24,13 @@ public class Method {
     public final int maxStacks;
     public final int maxLocals;
     public final Map<Integer, Instruction> instructionMap;
-    public final ExceptionTable exceptionTable;
+
     public final LineNumberTable lineNumberTable;
 
     public Class clazz;
 
     public Method(int accessFlags, String name, String descriptor, int maxStacks, int maxLocals,
-                  Map<Integer, Instruction> instructionMap, ExceptionTable exceptionTable,
+                  Map<Integer, Instruction> instructionMap,
                   LineNumberTable lineNumberTable) {
         this.accessFlags = accessFlags;
         this.name = name;
@@ -39,7 +38,6 @@ public class Method {
         this.maxStacks = maxStacks;
         this.maxLocals = maxLocals;
         this.instructionMap = instructionMap;
-        this.exceptionTable = exceptionTable;
         this.lineNumberTable = lineNumberTable;
     }
 

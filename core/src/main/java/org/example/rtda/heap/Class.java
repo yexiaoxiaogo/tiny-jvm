@@ -2,7 +2,6 @@ package org.example.rtda.heap;
 
 import org.example.classfile.ClassFile;
 import org.example.classfile.ConstantPool;
-import org.example.classfile.attribute.BootstrapMethods;
 import org.example.classloader.ClassLoader;
 
 import java.util.ArrayList;
@@ -16,13 +15,12 @@ public class Class {
     public final String superClassName;
     public final List<String> interfaceNames;
     public final List<Method> methods;
-    public final BootstrapMethods bootstrapMethods;
     public final ConstantPool constantPool;
     public final ClassLoader classLoader;
     public final ClassFile classFile;
 
     private Class superClass;
-    private List<Class> interfaces;
+    private final List<Class> interfaces;
     public int stat = 0;
 
     private Instance runtimeClass;
@@ -34,7 +32,6 @@ public class Class {
         this.superClassName = null;
         this.interfaceNames = new ArrayList<>();
         this.interfaces = new ArrayList<>();
-        this.bootstrapMethods = null;
         this.constantPool = null;
         this.classLoader = classLoader;
         this.methods = new ArrayList<>();
@@ -47,7 +44,6 @@ public class Class {
             String superClassName,
             List<String> interfaceNames,
             List<Method> methods,
-            BootstrapMethods bootstrapMethods,
             ConstantPool constantPool,
             ClassLoader classLoader,
             ClassFile classFile) {
@@ -58,7 +54,6 @@ public class Class {
         this.classFile = classFile;
         this.interfaces = new ArrayList<>();
         this.methods = methods;
-        this.bootstrapMethods = bootstrapMethods;
         this.constantPool = constantPool;
         this.classLoader = classLoader;
 
