@@ -6,7 +6,6 @@ import org.example.classfile.attribute.Code;
 import org.example.classpath.Entry;
 import org.example.rtda.heap.Class;
 import org.example.rtda.heap.Heap;
-import org.example.rtda.heap.Instance;
 import org.example.rtda.heap.Method;
 import org.example.util.Utils;
 
