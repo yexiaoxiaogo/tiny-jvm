@@ -22,10 +22,6 @@ public class ClassLoader {
         this.entry = entry;
     }
 
-    public String getName() {
-        return name;
-    }
-
     public Class loadClass(String interfaceName) {
         Class cache = Heap.findClass(interfaceName);
         if (cache != null) {
@@ -52,12 +48,6 @@ public class ClassLoader {
         // superclass
         if (aClass.superClassName != null) {
             aClass.setSuperClass(this.loadClass(aClass.superClassName));
-        }
-
-        if (Heap.findClass("java/lang/Class") != null) {
-            Instance rcs = Heap.findClass("java/lang/Class").newInstance();
-            aClass.setRuntimeClass(rcs);
-            rcs.setMetaClass(aClass);
         }
 
         return aClass;

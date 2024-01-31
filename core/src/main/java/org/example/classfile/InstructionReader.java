@@ -16,7 +16,7 @@ import java.io.DataInputStream;
 import java.io.IOException;
 
 public abstract class InstructionReader {
-    public static Instruction read(int opCode, DataInputStream stm, ConstantPool constantPool)
+    public static Instruction read(int opCode, DataInputStream stm)
             throws IOException {
         switch (opCode) {
             case 0x10:

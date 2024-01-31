@@ -1,7 +1,5 @@
 package org.example.rtda;
 
-import org.example.rtda.heap.Heap;
-
 public class MetaSpace {
     public static Thread main;
 

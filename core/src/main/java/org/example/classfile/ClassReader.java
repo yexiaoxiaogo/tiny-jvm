@@ -210,7 +210,7 @@ public abstract class ClassReader {
             while (stm.available() > 0) {
                 int opCode = stm.readUnsignedByte();
                 try {
-                    Instruction inst = InstructionReader.read(opCode, stm, constantPool);
+                    Instruction inst = InstructionReader.read(opCode, stm);
                     if (inst == null) {
                         System.out.println(Integer.toHexString(opCode) + " is missing");
                         break;

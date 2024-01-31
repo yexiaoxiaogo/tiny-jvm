@@ -1,23 +1,15 @@
 package org.example.util;
 
-import org.example.classfile.ConstantInfo;
 import org.example.classfile.ConstantPool;
 import org.example.classfile.cp.ClassCp;
-import org.example.classfile.cp.MethodDef;
-import org.example.classfile.cp.NameAndType;
 import org.example.classfile.cp.Utf8;
-import org.example.classloader.ClassLoader;
-import org.example.interpret.Interpreter;
-import org.example.rtda.*;
+import org.example.rtda.Frame;
+import org.example.rtda.MetaSpace;
+import org.example.rtda.Slot;
 import org.example.rtda.Thread;
-import org.example.rtda.heap.*;
-import org.example.rtda.heap.Class;
 
 import java.io.DataInputStream;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 public abstract class Utils {
     public static String getClassName(ConstantPool cp, int classIndex) {
@@ -36,47 +28,6 @@ public abstract class Utils {
     public static String getString(ConstantPool cp, int index) {
 
         return ((Utf8) cp.infos[index - 1]).getString();
-    }
-
-    public static List<String> parseMethodDescriptor(String descriptor) {
-        if (descriptor.startsWith("()")) {
-            return new ArrayList<>();
-        }
-
-        descriptor = descriptor.substring(descriptor.indexOf("(") + 1, descriptor.indexOf(")"));
-
-        List<Character> base = Arrays.asList('V', 'Z', 'B', 'C', 'S', 'I', 'J', 'F', 'D');
-        List<String> rets = new ArrayList<>();
-        for (int i = 0; i < descriptor.length(); i++) {
-            if (base.contains(descriptor.charAt(i))) {
-                rets.add(String.valueOf(descriptor.charAt(i)));
-                continue;
-            }
-            // array
-            if (descriptor.charAt(i) == '[') {
-                int temp = i;
-                i++;
-                while (descriptor.charAt(i) == '[') {
-                    i++;
-                }
-                if (base.contains(descriptor.charAt(i))) {
-                    rets.add(descriptor.substring(temp, i + 1));
-                    continue;
-                }
-                int idx = descriptor.indexOf(';', i);
-                rets.add(descriptor.substring(temp, idx));
-                i = idx;
-                continue;
-            }
-            // class
-            if (descriptor.charAt(i) == 'L') {
-                int idx = descriptor.indexOf(';', i);
-                rets.add(descriptor.substring(i, idx));
-                i = idx;
-                continue;
-            }
-        }
-        return rets;
     }
 
 
@@ -119,46 +70,5 @@ public abstract class Utils {
     }
 
 
-    public static void invokeMethod(Method method) {
 
-        Frame newFrame = new Frame(method);
-        final Thread env = MetaSpace.getMainEnv();
-        final Frame old = env.topFrame();
-
-        // 传参
-        final int slots = method.getArgSlotSize();
-        for (int i = slots - 1; i >= 0; i--) {
-            newFrame.set(i, old.pop());
-        }
-
-        env.pushFrame(newFrame);
-    }
-
-    public static String getClassNameByMethodDefIdx(ConstantPool constantPool, int mdIdx) {
-        ConstantInfo methodInfo = constantPool.infos[mdIdx - 1];
-        MethodDef methodDef = (MethodDef) methodInfo;
-        return getClassName(constantPool, methodDef.classIndex);
-    }
-
-    public static String getMethodNameByMethodDefIdx(ConstantPool cp, int mdIdx) {
-        ConstantInfo methodInfo = cp.infos[mdIdx - 1];
-        MethodDef methodDef = (MethodDef) methodInfo;
-        return getNameByNameAndTypeIdx(cp, methodDef.nameAndTypeIndex);
-    }
-
-    public static String getNameByNameAndTypeIdx(ConstantPool cp, int natIdx) {
-        int nameIndex = ((NameAndType) cp.infos[natIdx - 1]).nameIndex;
-        return getString(cp, nameIndex);
-    }
-
-    public static String getMethodTypeByMethodDefIdx(ConstantPool cp, int mdIdx) {
-        ConstantInfo methodInfo = cp.infos[mdIdx - 1];
-        MethodDef methodDef = (MethodDef) methodInfo;
-        return getTypeByNameAndTypeIdx(cp, methodDef.nameAndTypeIndex);
-    }
-
-    public static String getTypeByNameAndTypeIdx(ConstantPool cp, int natIdx) {
-        int idx = ((NameAndType) cp.infos[natIdx - 1]).descriptionIndex;
-        return getString(cp, idx);
-    }
 }

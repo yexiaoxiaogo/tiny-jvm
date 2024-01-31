@@ -41,21 +41,6 @@ public class Method {
         this.lineNumberTable = lineNumberTable;
     }
 
-    public int getArgSlotSize() {
-        int cnt = 0;
-        for (String it : Utils.parseMethodDescriptor(this.descriptor)) {
-            if (Objects.equals("J", it)) {
-                cnt += 2;
-                continue;
-            }
-            if (Objects.equals("D", it)) {
-                cnt += 2;
-                continue;
-            }
-            cnt++;
-        }
-        return cnt;
-    }
 
     @Override
     public String toString() {
